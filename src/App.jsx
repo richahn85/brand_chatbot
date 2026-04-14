@@ -90,10 +90,22 @@ export default function App() {
     } finally { setLoading(false); }
   };
 
-  const md = (t) => t
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\n\n/g,"</p><p>").replace(/\n/g,"<br/>")
-    .replace(/^/,"<p>").replace(/$/,"</p>");
+  const md = (t) => {
+    return t
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/^#### (.+)$/gm, "<h4 style=\'font-size:13px;font-weight:700;color:#0a3d62;margin:10px 0 4px\'>$1</h4>")
+      .replace(/^### (.+)$/gm, "<h3 style=\'font-size:14px;font-weight:700;color:#0a3d62;margin:12px 0 4px\'>$1</h3>")
+      .replace(/^## (.+)$/gm, "<h2 style=\'font-size:15px;font-weight:700;color:#0a3d62;margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid #d6e8f7\'>$1</h2>")
+      .replace(/^# (.+)$/gm, "<h2 style=\'font-size:15px;font-weight:700;color:#0a3d62;margin:14px 0 6px\'>$1</h2>")
+      .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+      .replace(/\*(.+?)\*/g, "<em>$1</em>")
+      .replace(/^[-•] (.+)$/gm, "<li style=\'margin:3px 0\'>$1</li>")
+      .replace(/^(①|②|③|④|⑤) (.+)$/gm, "<li style=\'margin:3px 0\'><b style=\'color:#0a3d62\'>$1</b> $2</li>")
+      .replace(/(<li[^>]*>[\s\S]*?<\/li>\n?)+/g, (m) => `<ul style="margin:6px 0 8px 14px;padding:0;list-style:disc">${m}</ul>`)
+      .replace(/<\/ul>\n?<ul[^>]*>/g, "")
+      .replace(/\n\n/g, "<br/>")
+      .replace(/\n/g, "<br/>");
+  };
 
   return (
     <div style={{ fontFamily:"'Noto Sans KR',sans-serif", maxWidth:860, margin:"0 auto" }}>
